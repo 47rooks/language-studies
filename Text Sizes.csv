@@ -1,0 +1,331 @@
+Author,Text,Section,Total Words,IncludedInTotal,AccWorkspace
+Josephus,Josephus Greek,Antiq.,306488,True,Text Sizes
+Josephus,Josephus Greek,War,125595,True,Text Sizes
+Josephus,Josephus Greek,Life,15836,True,Text Sizes
+Josephus,Josephus Greek,Apion,20586,True,Text Sizes
+Josephus,Josephus Greek,__ALL__,468505,False,Text Sizes
+Various,LXX Rahlfs Tagged,Genesis,32572,True,Text Sizes
+Various,LXX Rahlfs Tagged,Exodus,24818,True,Text Sizes
+Various,LXX Rahlfs Tagged,Leviticus,19085,True,Text Sizes
+Various,LXX Rahlfs Tagged,Numbers,25059,True,Text Sizes
+Various,LXX Rahlfs Tagged,Deuteronomy,22996,True,Text Sizes
+Various,LXX Rahlfs Tagged,Joshua,14896,True,Text Sizes
+Various,LXX Rahlfs Tagged,Judges,15947,True,Text Sizes
+Various,LXX Rahlfs Tagged,Ruth,2075,True,Text Sizes
+Various,LXX Rahlfs Tagged,1Samuel,20138,True,Text Sizes
+Various,LXX Rahlfs Tagged,2Samuel,17929,True,Text Sizes
+Various,LXX Rahlfs Tagged,1Kings,20810,True,Text Sizes
+Various,LXX Rahlfs Tagged,2Kings,18854,True,Text Sizes
+Various,LXX Rahlfs Tagged,1Chronicles,16246,True,Text Sizes
+Various,LXX Rahlfs Tagged,2Chronicles,21355,True,Text Sizes
+Various,LXX Rahlfs Tagged,1Esdras,8996,True,Text Sizes
+Various,LXX Rahlfs Tagged,Ezra,5586,True,Text Sizes
+Various,LXX Rahlfs Tagged,Nehemiah,7676,True,Text Sizes
+Various,LXX Rahlfs Tagged,Esther,5847,True,Text Sizes
+Various,LXX Rahlfs Tagged,Judith,9175,True,Text Sizes
+Various,LXX Rahlfs Tagged,Tobit,5506,True,Text Sizes
+Various,LXX Rahlfs Tagged,1Maccabees,18295,True,Text Sizes
+Various,LXX Rahlfs Tagged,2Maccabees,11921,True,Text Sizes
+Various,LXX Rahlfs Tagged,3Maccabees,5111,True,Text Sizes
+Various,LXX Rahlfs Tagged,4Maccabees,7869,True,Text Sizes
+Various,LXX Rahlfs Tagged,Psalms,34967,True,Text Sizes
+Various,LXX Rahlfs Tagged,Odes,4191,True,Text Sizes
+Various,LXX Rahlfs Tagged,Proverbs,11166,True,Text Sizes
+Various,LXX Rahlfs Tagged,Ecclesiastes,4546,True,Text Sizes
+Various,LXX Rahlfs Tagged,Song,2026,True,Text Sizes
+Various,LXX Rahlfs Tagged,Job,13568,True,Text Sizes
+Various,LXX Rahlfs Tagged,Wisdom,6949,True,Text Sizes
+Various,LXX Rahlfs Tagged,Sirach,18668,True,Text Sizes
+Various,LXX Rahlfs Tagged,Solomon,4926,True,Text Sizes
+Various,LXX Rahlfs Tagged,Hosea,3936,True,Text Sizes
+Various,LXX Rahlfs Tagged,Amos,3210,True,Text Sizes
+Various,LXX Rahlfs Tagged,Micah,2368,True,Text Sizes
+Various,LXX Rahlfs Tagged,Joel,1580,True,Text Sizes
+Various,LXX Rahlfs Tagged,Obadiah,472,True,Text Sizes
+Various,LXX Rahlfs Tagged,Jonah,1090,True,Text Sizes
+Various,LXX Rahlfs Tagged,Nahum,937,True,Text Sizes
+Various,LXX Rahlfs Tagged,Habakkuk,1105,True,Text Sizes
+Various,LXX Rahlfs Tagged,Zephaniah,1223,True,Text Sizes
+Various,LXX Rahlfs Tagged,Haggai,947,True,Text Sizes
+Various,LXX Rahlfs Tagged,Zechariah,4965,True,Text Sizes
+Various,LXX Rahlfs Tagged,Malachi,1417,True,Text Sizes
+Various,LXX Rahlfs Tagged,Isaiah,27087,True,Text Sizes
+Various,LXX Rahlfs Tagged,Jeremiah,28950,True,Text Sizes
+Various,LXX Rahlfs Tagged,Baruch,2608,True,Text Sizes
+Various,LXX Rahlfs Tagged,Lamentations,2391,True,Text Sizes
+Various,LXX Rahlfs Tagged,Letterjeremiah,1285,True,Text Sizes
+Various,LXX Rahlfs Tagged,Ezekiel,29662,True,Text Sizes
+Various,LXX Rahlfs Tagged,Daniel,10782,True,Text Sizes
+Various,LXX Rahlfs Tagged,Susanna,792,True,Text Sizes
+Various,LXX Rahlfs Tagged,Bel,901,True,Text Sizes
+Various,LXX Rahlfs Tagged,__ALL__,587477,False,Text Sizes
+Basil the Great,Basil Greek,Spir.,25899,True,Text Sizes
+Basil the Great,Basil Greek,__ALL__,25899,False,Text Sizes
+Athanasius,Athanasius Greek,Incar.,19859,True,Text Sizes
+Athanasius,Athanasius Greek,Gentes,18027,True,Text Sizes
+Athanasius,Athanasius Greek,Arians,87870,True,Text Sizes
+Athanasius,Athanasius Greek,Serap.,20153,True,Text Sizes
+Athanasius,Athanasius Greek,BSerap.,935,True,Text Sizes
+Athanasius,Athanasius Greek,__ALL__,146844,False,Text Sizes
+Philo,Philo Greek,Opif,13342,True,Text Sizes
+Philo,Philo Greek,Legum,31666,True,Text Sizes
+Philo,Philo Greek,Cher,7569,True,Text Sizes
+Philo,Philo Greek,Sacr,9476,True,Text Sizes
+Philo,Philo Greek,Det,11214,True,Text Sizes
+Philo,Philo Greek,Post,10978,True,Text Sizes
+Philo,Philo Greek,Gig,3255,True,Text Sizes
+Philo,Philo Greek,Deus,8932,True,Text Sizes
+Philo,Philo Greek,Agr,9013,True,Text Sizes
+Philo,Philo Greek,Plant,8888,True,Text Sizes
+Philo,Philo Greek,Ebr,11535,True,Text Sizes
+Philo,Philo Greek,Sobr,3579,True,Text Sizes
+Philo,Philo Greek,Conf,10274,True,Text Sizes
+Philo,Philo Greek,Migr,12471,True,Text Sizes
+Philo,Philo Greek,Her,15701,True,Text Sizes
+Philo,Philo Greek,Congr,8839,True,Text Sizes
+Philo,Philo Greek,Fug,10883,True,Text Sizes
+Philo,Philo Greek,Mut,13023,True,Text Sizes
+Philo,Philo Greek,Somn,25846,True,Text Sizes
+Philo,Philo Greek,Abr,13310,True,Text Sizes
+Philo,Philo Greek,Ios,12846,True,Text Sizes
+Philo,Philo Greek,Moys,31452,True,Text Sizes
+Philo,Philo Greek,Decal,8459,True,Text Sizes
+Philo,Philo Greek,Spec,56900,True,Text Sizes
+Philo,Philo Greek,Virt,12202,True,Text Sizes
+Philo,Philo Greek,Praem,9099,True,Text Sizes
+Philo,Philo Greek,Prob,7639,True,Text Sizes
+Philo,Philo Greek,Contempl,4604,True,Text Sizes
+Philo,Philo Greek,Aet,9220,True,Text Sizes
+Philo,Philo Greek,Flacc,8931,True,Text Sizes
+Philo,Philo Greek,Legat,17519,True,Text Sizes
+Philo,Philo Greek,Hypoth,2349,True,Text Sizes
+Philo,Philo Greek,Prov,4225,True,Text Sizes
+Philo,Philo Greek,1QGen,8252,True,Text Sizes
+Philo,Philo Greek,2QGen,637,True,Text Sizes
+Philo,Philo Greek,3QGen,1090,True,Text Sizes
+Philo,Philo Greek,1QEx,2239,True,Text Sizes
+Philo,Philo Greek,2QEx,1151,True,Text Sizes
+Philo,Philo Greek,__ALL__,438608,False,Text Sizes
+Various,NA28 GNT,Matthew,18365,True,Text Sizes
+Various,NA28 GNT,Mark,11314,True,Text Sizes
+Various,NA28 GNT,Luke,19497,True,Text Sizes
+Various,NA28 GNT,John,15673,True,Text Sizes
+Various,NA28 GNT,Acts,18472,True,Text Sizes
+Various,NA28 GNT,1 Acts,10063,False,Text Sizes
+Various,NA28 GNT,2 Acts,8409,False,Text Sizes
+Various,NA28 GNT,Romans,7116,True,Text Sizes
+Various,NA28 GNT,1Corinthians,6843,True,Text Sizes
+Various,NA28 GNT,2Corinthians,4491,True,Text Sizes
+Various,NA28 GNT,Galatians,2235,True,Text Sizes
+Various,NA28 GNT,Ephesians,2425,True,Text Sizes
+Various,NA28 GNT,Philippians,1633,True,Text Sizes
+Various,NA28 GNT,Colossians,1583,True,Text Sizes
+Various,NA28 GNT,1Thessalonians,1485,True,Text Sizes
+Various,NA28 GNT,2Thessalonians,826,True,Text Sizes
+Various,NA28 GNT,1Timothy,1594,True,Text Sizes
+Various,NA28 GNT,2Timothy,1242,True,Text Sizes
+Various,NA28 GNT,Titus,661,True,Text Sizes
+Various,NA28 GNT,Philemon,337,True,Text Sizes
+Various,NA28 GNT,Hebrews,4958,True,Text Sizes
+Various,NA28 GNT,James,1748,True,Text Sizes
+Various,NA28 GNT,1Peter,1683,True,Text Sizes
+Various,NA28 GNT,2Peter,1102,True,Text Sizes
+Various,NA28 GNT,1John,2143,True,Text Sizes
+Various,NA28 GNT,2John,248,True,Text Sizes
+Various,NA28 GNT,3John,221,True,Text Sizes
+Various,NA28 GNT,Jude,460,True,Text Sizes
+Various,NA28 GNT,Revelation,9858,True,Text Sizes
+Various,NA28 GNT,__ALL__,138213,False,Text Sizes
+Various,Apostolic Fathers Greek,1Clem.,9889,True,Text Sizes
+Various,Apostolic Fathers Greek,2Clem.,3018,True,Text Sizes
+Various,Apostolic Fathers Greek,Eph.,1777,True,Text Sizes
+Various,Apostolic Fathers Greek,Mag.,1060,True,Text Sizes
+Various,Apostolic Fathers Greek,Tral.,956,True,Text Sizes
+Various,Apostolic Fathers Greek,Rom.,1029,True,Text Sizes
+Various,Apostolic Fathers Greek,Phila.,1020,True,Text Sizes
+Various,Apostolic Fathers Greek,Smyr.,1151,True,Text Sizes
+Various,Apostolic Fathers Greek,Poly.,788,True,Text Sizes
+Various,Apostolic Fathers Greek,Phili.,1141,True,Text Sizes
+Various,Apostolic Fathers Greek,MPoly.,2638,True,Text Sizes
+Various,Apostolic Fathers Greek,Did.,2203,True,Text Sizes
+Various,Apostolic Fathers Greek,Barn.,6714,True,Text Sizes
+Various,Apostolic Fathers Greek,Shep.,27638,True,Text Sizes
+Various,Apostolic Fathers Greek,Diog.,2616,True,Text Sizes
+Various,Apostolic Fathers Greek,Quad.,130,True,Text Sizes
+Various,Apostolic Fathers Greek,Pap.,2201,True,Text Sizes
+Various,Apostolic Fathers Greek,Trad.,295,True,Text Sizes
+Various,Apostolic Fathers Greek,__ALL__,66264,False,Text Sizes
+Unknown,Gospel of Thomas (Greek),Thom.,2665,True,Text Sizes
+Unknown,Gospel of Thomas (Greek),__ALL__,2665,False,Text Sizes
+Gregory of Nazianzus,Gregory Greek,Orat.,9747,True,Text Sizes
+Gregory of Nazianzus,Gregory Greek,__ALL__,9747,False,Text Sizes
+Gregory of Nyssa,Gregory of Nyssa (Greek),Cat.,20359,True,Text Sizes
+Gregory of Nyssa,Gregory of Nyssa (Greek),__ALL__,20359,False,Text Sizes
+Various,Pseudepigrapha Greek,Enoch,8431,True,Text Sizes
+Various,Pseudepigrapha Greek,Sibyl.,29288,True,Text Sizes
+Various,Pseudepigrapha Greek,Ezek.,725,True,Text Sizes
+Various,Pseudepigrapha Greek,Zeph.,52,True,Text Sizes
+Various,Pseudepigrapha Greek,4Esdr.,198,True,Text Sizes
+Various,Pseudepigrapha Greek,Esdr.,2582,True,Text Sizes
+Various,Pseudepigrapha Greek,Sedr.,2787,True,Text Sizes
+Various,Pseudepigrapha Greek,2Bar.,166,True,Text Sizes
+Various,Pseudepigrapha Greek,3Bar.,3132,True,Text Sizes
+Various,Pseudepigrapha Greek,Elijah_A,64,True,Text Sizes
+Various,Pseudepigrapha Greek,Elijah_B,49,True,Text Sizes
+Various,Pseudepigrapha Greek,Reub.,1422,True,Text Sizes
+Various,Pseudepigrapha Greek,Sim.,1157,True,Text Sizes
+Various,Pseudepigrapha Greek,Levi,2986,True,Text Sizes
+Various,Pseudepigrapha Greek,Judah,3220,True,Text Sizes
+Various,Pseudepigrapha Greek,Issach.,1033,True,Text Sizes
+Various,Pseudepigrapha Greek,Zebul.,1490,True,Text Sizes
+Various,Pseudepigrapha Greek,Dan,1209,True,Text Sizes
+Various,Pseudepigrapha Greek,Naph.,1467,True,Text Sizes
+Various,Pseudepigrapha Greek,Gad,1155,True,Text Sizes
+Various,Pseudepigrapha Greek,Asher,994,True,Text Sizes
+Various,Pseudepigrapha Greek,Joseph,2675,True,Text Sizes
+Various,Pseudepigrapha Greek,Benj.,1590,True,Text Sizes
+Various,Pseudepigrapha Greek,Job,6792,True,Text Sizes
+Various,Pseudepigrapha Greek,Abraham_A,6952,True,Text Sizes
+Various,Pseudepigrapha Greek,Abraham_B,3221,True,Text Sizes
+Various,Pseudepigrapha Greek,Moses,404,True,Text Sizes
+Various,Pseudepigrapha Greek,Sol_A,8169,True,Text Sizes
+Various,Pseudepigrapha Greek,Sol_B,100,True,Text Sizes
+Various,Pseudepigrapha Greek,Sol_C,131,True,Text Sizes
+Various,Pseudepigrapha Greek,Sol_D,112,True,Text Sizes
+Various,Pseudepigrapha Greek,Adam_A,396,True,Text Sizes
+Various,Pseudepigrapha Greek,Adam_B,64,True,Text Sizes
+Various,Pseudepigrapha Greek,Aristeas,12943,True,Text Sizes
+Various,Pseudepigrapha Greek,Jub.,2288,True,Text Sizes
+Various,Pseudepigrapha Greek,Isaiah_A,1117,True,Text Sizes
+Various,Pseudepigrapha Greek,Isaiah_B,169,True,Text Sizes
+Various,Pseudepigrapha Greek,Asen.,8230,True,Text Sizes
+Various,Pseudepigrapha Greek,Adam_Eve,4468,True,Text Sizes
+Various,Pseudepigrapha Greek,Lives,2697,True,Text Sizes
+Various,Pseudepigrapha Greek,4Bar.,4182,True,Text Sizes
+Various,Pseudepigrapha Greek,Jannes_A,1617,True,Text Sizes
+Various,Pseudepigrapha Greek,Jannes_B,228,True,Text Sizes
+Various,Pseudepigrapha Greek,Rechab.,3566,True,Text Sizes
+Various,Pseudepigrapha Greek,Eldad,18,True,Text Sizes
+Various,Pseudepigrapha Greek,History_J.,400,True,Text Sizes
+Various,Pseudepigrapha Greek,3Mac.,5080,True,Text Sizes
+Various,Pseudepigrapha Greek,4Mac.,7908,True,Text Sizes
+Various,Pseudepigrapha Greek,Phocyl.,1585,True,Text Sizes
+Various,Pseudepigrapha Greek,Prayer_Jos.,276,True,Text Sizes
+Various,Pseudepigrapha Greek,Prayer_Man.,481,True,Text Sizes
+Various,Pseudepigrapha Greek,Prayer_Jac.,259,True,Text Sizes
+Various,Pseudepigrapha Greek,Ode_Sol.,335,True,Text Sizes
+Various,Pseudepigrapha Greek,Ps_Sol.,4927,True,Text Sizes
+Various,Pseudepigrapha Greek,Philo,236,True,Text Sizes
+Various,Pseudepigrapha Greek,Theod.,706,True,Text Sizes
+Various,Pseudepigrapha Greek,Orph.,728,True,Text Sizes
+Various,Pseudepigrapha Greek,Ezekiel_Trag.,1642,True,Text Sizes
+Various,Pseudepigrapha Greek,Aristob.,2020,True,Text Sizes
+Various,Pseudepigrapha Greek,Demetr.,1507,True,Text Sizes
+Various,Pseudepigrapha Greek,Arist_Job,336,True,Text Sizes
+Various,Pseudepigrapha Greek,Eupolem.,1692,True,Text Sizes
+Various,Pseudepigrapha Greek,Pseudo_Eupol.,451,True,Text Sizes
+Various,Pseudepigrapha Greek,Cleodem.,286,True,Text Sizes
+Various,Pseudepigrapha Greek,Artapan.,1769,True,Text Sizes
+Various,Pseudepigrapha Greek,Pseudo_Hecat.,1146,True,Text Sizes
+Various,Pseudepigrapha Greek,Ord_Levi,1299,True,Text Sizes
+Various,Pseudepigrapha Greek,Prayer_Levi,307,True,Text Sizes
+Various,Pseudepigrapha Greek,Rich_Man,287,True,Text Sizes
+Various,Pseudepigrapha Greek,Prophetic,64,True,Text Sizes
+Various,Pseudepigrapha Greek,Apocalyptic,91,True,Text Sizes
+Various,Pseudepigrapha Greek,Exorcism_A,483,True,Text Sizes
+Various,Pseudepigrapha Greek,Exorcism_B,483,True,Text Sizes
+Various,Pseudepigrapha Greek,Zech.,125,True,Text Sizes
+Various,Pseudepigrapha Greek,__ALL__,172645,False,Text Sizes
+Various,LXX Swete,Genesis,32635,True,Text Sizes
+Various,LXX Swete,Exodus,24636,True,Text Sizes
+Various,LXX Swete,Leviticus,19042,True,Text Sizes
+Various,LXX Swete,Numbers,25000,True,Text Sizes
+Various,LXX Swete,Deuteronomy,22513,True,Text Sizes
+Various,LXX Swete,Joshua,14858,True,Text Sizes
+Various,LXX Swete,Judges,15589,True,Text Sizes
+Various,LXX Swete,Ruth,2061,True,Text Sizes
+Various,LXX Swete,1Samuel,20067,True,Text Sizes
+Various,LXX Swete,2Samuel,17907,True,Text Sizes
+Various,LXX Swete,1Kings,20488,True,Text Sizes
+Various,LXX Swete,2Kings,18637,True,Text Sizes
+Various,LXX Swete,1Chronicles,15962,True,Text Sizes
+Various,LXX Swete,2Chronicles,21102,True,Text Sizes
+Various,LXX Swete,1Esdras,8808,True,Text Sizes
+Various,LXX Swete,Ezra,5340,True,Text Sizes
+Various,LXX Swete,Nehemiah,7359,True,Text Sizes
+Various,LXX Swete,Psalms,34787,True,Text Sizes
+Various,LXX Swete,Proverbs,11095,True,Text Sizes
+Various,LXX Swete,Ecclesiastes,4529,True,Text Sizes
+Various,LXX Swete,Song,2001,True,Text Sizes
+Various,LXX Swete,Job,13516,True,Text Sizes
+Various,LXX Swete,Wisdom,6934,True,Text Sizes
+Various,LXX Swete,Sirach,18691,True,Text Sizes
+Various,LXX Swete,Esther,5832,True,Text Sizes
+Various,LXX Swete,Judith,9117,True,Text Sizes
+Various,LXX Swete,Tobit,5459,True,Text Sizes
+Various,LXX Swete,Hosea,3920,True,Text Sizes
+Various,LXX Swete,Amos,3201,True,Text Sizes
+Various,LXX Swete,Micah,2344,True,Text Sizes
+Various,LXX Swete,Joel,1574,True,Text Sizes
+Various,LXX Swete,Obadiah,456,True,Text Sizes
+Various,LXX Swete,Jonah,1080,True,Text Sizes
+Various,LXX Swete,Nahum,932,True,Text Sizes
+Various,LXX Swete,Habakkuk,1091,True,Text Sizes
+Various,LXX Swete,Zephaniah,1222,True,Text Sizes
+Various,LXX Swete,Haggai,948,True,Text Sizes
+Various,LXX Swete,Zechariah,4957,True,Text Sizes
+Various,LXX Swete,Malachi,1409,True,Text Sizes
+Various,LXX Swete,Isaiah,26981,True,Text Sizes
+Various,LXX Swete,Jeremiah,28786,True,Text Sizes
+Various,LXX Swete,Baruch,2600,True,Text Sizes
+Various,LXX Swete,Lamentations,2464,True,Text Sizes
+Various,LXX Swete,Letterjeremiah,1285,True,Text Sizes
+Various,LXX Swete,Ezekiel,29405,True,Text Sizes
+Various,LXX Swete,Daniel,10961,True,Text Sizes
+Various,LXX Swete,Susanna,885,True,Text Sizes
+Various,LXX Swete,Bel,901,True,Text Sizes
+Various,LXX Swete,1Maccabees,18293,True,Text Sizes
+Various,LXX Swete,2Maccabees,11876,True,Text Sizes
+Various,LXX Swete,3Maccabees,5079,True,Text Sizes
+Various,LXX Swete,4Maccabees,7909,True,Text Sizes
+Various,LXX Swete,Solomon,4931,True,Text Sizes
+Various,LXX Swete,Odes,4210,True,Text Sizes
+Various,LXX Swete,__ALL__,583665,False,Text Sizes
+Various,LXX Swete (parallel texts),Tobit,7148,True,Text Sizes
+Various,LXX Swete (parallel texts),Daniel,10290,True,Text Sizes
+Various,LXX Swete (parallel texts),Susanna,1130,True,Text Sizes
+Various,LXX Swete (parallel texts),Bel,865,True,Text Sizes
+Various,LXX Swete (parallel texts),__ALL__,19433,False,Text Sizes
+Various,LXX Swete (Enoch),Enoch,5716,True,Text Sizes
+Various,LXX Swete (Enoch),__ALL__,5716,False,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,Jam.,496,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,Test.,668,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,Clem.,2517,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,1Hom.,3565,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,2Hom.,5778,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,3Hom.,7717,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,4Hom.,2528,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,5Hom.,3329,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,6Hom.,3373,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,7Hom.,1459,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,8Hom.,2839,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,9Hom.,2709,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,10Hom.,2933,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,11Hom.,4570,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,12Hom.,4762,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,13Hom.,2790,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,14Hom.,1885,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,15Hom.,1622,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,16Hom.,3313,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,17Hom.,3610,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,18Hom.,3548,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,19Hom.,4731,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,20Hom.,4208,True,Text Sizes
+Unknown,Pseudo-Clem. Homilies Greek,__ALL__,74950,False,Text Sizes
+Epictetus,Epictetus Greek,Enchir.,5002,True,Text Sizes
+Epictetus,Epictetus Greek,Arrian,200,True,Text Sizes
+Epictetus,Epictetus Greek,1Disc.,18218,True,Text Sizes
+Epictetus,Epictetus Greek,2Disc.,19798,True,Text Sizes
+Epictetus,Epictetus Greek,3Disc.,20190,True,Text Sizes
+Epictetus,Epictetus Greek,4Disc.,16897,True,Text Sizes
+Epictetus,Epictetus Greek,__ALL__,80305,False,Text Sizes
