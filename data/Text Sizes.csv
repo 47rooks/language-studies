@@ -108,11 +108,11 @@ Philo,Philo Greek,2QEx,1151,True,Text Sizes
 Philo,Philo Greek,__ALL__,438608,False,Text Sizes
 Various,NA28 GNT,Matthew,18365,True,Text Sizes
 Various,NA28 GNT,Mark,11314,True,Text Sizes
-Various,NA28 GNT,Luke,19497,True,Text Sizes
+Luke,NA28 GNT,Luke,19497,True,Text Sizes
 Various,NA28 GNT,John,15673,True,Text Sizes
 Various,NA28 GNT,Acts,18472,True,Text Sizes
-Various,NA28 GNT,1 Acts,10063,False,Text Sizes
-Various,NA28 GNT,2 Acts,8409,False,Text Sizes
+Luke,NA28 GNT,1 Acts,10063,False,Text Sizes
+Luke,NA28 GNT,2 Acts,8409,False,Text Sizes
 Various,NA28 GNT,Romans,7116,True,Text Sizes
 Various,NA28 GNT,1Corinthians,6843,True,Text Sizes
 Various,NA28 GNT,2Corinthians,4491,True,Text Sizes
