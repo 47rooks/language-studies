@@ -108,7 +108,21 @@ def create_qry(texts = [], connectives = []):
     return 'Connective in {} and ({})'.format(connectives, ' or '.join(qry_frags))
 
 class CorpusMetrics:
+    """A CorpusMetrics object contains metrics about features found in texts. It
+    contains a list of the texts in which the features are found, the features themselves,
+    the total number of occurrences of the features in each text, and the number
+    of occurrences per 1000 words of the features in each text.
 
+    It is intended primarily as a display object and provides a way to tabulate and
+    plot the data via Bokeh.
+
+    CorpusMetrics supports a major and minor (subordinate) X axis so that one may plot
+    bar charts of features by two dimensions. For example one may plot occurrences of
+    Greek connectives, by texts, using groups of adjacent ('dodged' in Bokeh terms) bars
+    in bar chart. Each group of bars would be for a particular connective and the bars
+    in each group would be for a given text. The plot provides mouse hover popups
+    showing the current bar's values.
+    """
     def __init__(self, texts=None, connectives=None, title=None,
                  x_title=None, y_title=None,
                  x_major_name=None, x_minor_name=None, x_minor_values=[]):
@@ -121,7 +135,16 @@ class CorpusMetrics:
                    {'Josephus Greek': [],
                     'LXX Rahlfs Tagged': [],
                     'NA28 GNT': ['1 Acts', '2 Acts', 'Mark', 'Luke', 'Matthew'] }
-            connectives: a list of the connectives to include in the query
+            connectives: a list of the connectives to include in the query. The
+                         connective names are those drawn from the
+                         'Text Linguistics Greek Connectives Data.csv' file.
+            FIXME connectives is not general enough - should be feature
+            title: A string for the title for the plot
+            x_title: A string for the X-axis title
+            y_title: A string for the Y-axis title
+            x_major_name: A string with the name of the major X axis
+            x_minor_name: A name for subordinate data series for the X axis if required
+            x_minor_values: A list containing the subordinate data values
         """
         self._texts = texts
         self._connectives = connectives
@@ -169,12 +192,12 @@ class CorpusMetrics:
         self._all_data_sorted = all_data.sort_values(by=['Book'])
 
     def blank_index(self):
-        """Blank out the index column so that we do not see it in print outs.
+        """Blank out the index column so it is not seen in dataframe prints.
         """
         blankIndex=[''] * len(self._display_data)
         self._display_data.index=blankIndex
 
-    def validate_columns(self, df):
+    def _validate_columns(self, df):
         """Verify that the df has the expected columns, which are
         'Book', 'Hit Total', 'Total Words', 'Hits per 1000'.
 
@@ -194,20 +217,14 @@ class CorpusMetrics:
     def compact(self):
         """Compact rows in df where 'Hit Total' == 0 and summarize the Book values for
         consecutive 0 rows by creating a new with Text = first row.Text + '-' + last row.Text,
-        and totalling the 'Hit Total' and 'Total Words'.
-
-        self._all_data_sorted is the source dataframe and is assumed to be sorted
+        and totalling the 'Hit Total' and 'Total Words'. The data is assumed to be sorted
         in the desired order and is not sorted again. Thus there may be multiple groups
-        of compacted 0 rows. This is by design.
-
-        A new DataFrame is assigned to self._compacted_df. self._all_data_sorted is not
-        modified. Any columns beyond those specified will be dropped from the result.
-
-        Arguments
-            df: a DataFrame having exactly the following columns, Book, 'Hit Total', 'Total Words'
-                and 'Hits per 1000'.
+        of compacted 0 rows. This is intended behaviour.
         """
-        self.validate_columns(self._all_data_sorted)
+        # self._all_data_sorted is the source dataframe and a new DataFrame is assigned to
+        # self._compacted_df. self._all_data_sorted is not modified. Any columns beyond
+        # those specified will be dropped from the result.
+        self._validate_columns(self._all_data_sorted)
 
         compacted_df = pd.DataFrame(columns=['Book', 'Hit Total', 'Total Words', 'Hits per 1000'])
         compacting = False
@@ -245,9 +262,9 @@ class CorpusMetrics:
         """Set the texts, chapters and such to include in the result table.
         
         Arguments
-            include: a list of texts/sections to include. The names come from the text
-                     book column of the all_data object.
-                     FIXME - this needs proper definition.
+            include: a list of texts/sections to include. The names are the same as
+                     those in the 'Text Sizes.csv' and 
+                     'Text Linguistics Greek Connectives Data.csv' files.
         """
         self._display_data = self._display_data.query('Book in {}'.format(include))
         self._display_data['Book'] = pd.Categorical(self._display_data['Book'], include, True)
@@ -256,7 +273,7 @@ class CorpusMetrics:
     # def formatted_to_string(self):
     #     """Return a formatted string for printing
     #     """
-    #     validate_columns(self, df)
+    #     _validate_columns(self, df)
 
     #     formatters = {}
     #     for col in list(df.columns):
@@ -269,9 +286,9 @@ class CorpusMetrics:
     #             formatters[col] = ft.partial(str.format, "{{:>{}.2F}}".format(len(col)))
     #     return df.to_string(formatters=formatters, justify='left')
 
-    def create_plot(self, x_range, s_data, x_minor_values, colors,
-                    chart_title=None, x_title=None, y_title='Occurrences per 1000 words',
-                    x_major_name=None, x2_minor_name=None):
+    def _create_plot(self, x_range, s_data, x_minor_values, colors,
+                     chart_title=None, x_title=None, y_title='Occurrences per 1000 words',
+                     x_major_name=None, x2_minor_name=None):
         """Create a figure for the specified x_range and data_range.
         
         Arguments:
@@ -334,7 +351,9 @@ class CorpusMetrics:
         return p
 
     def create_display(self):
-        """Create a display from the display_table
+        """Create a display of the data. The display returned is a Boekh row with a
+        data table on the left and a bar chart on the right. This may be displayed with
+        Bokeh show().
         """
         # Create Bokeh datatable from self._display_data df
         # bokeh columns
@@ -350,7 +369,7 @@ class CorpusMetrics:
                                't' + self._x_minor_values[0]: self._display_data['Hit Total']
                               })
 
-        fig = self.create_plot(x_range=list(self._display_data.Book),
+        fig = self._create_plot(x_range=list(self._display_data.Book),
                                s_data=s_data,
                                x_minor_values=self._x_minor_values,
                                colors=viridis(1),
