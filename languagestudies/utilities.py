@@ -73,19 +73,19 @@ def compute_per1000_data(df):
     FIXME - modify to handle Text vs Text/Section automatically
     """
     if 'Section' in df.columns and 'Text' in df.columns:
-        conn = df[['Text', 'Section', 'Feature', 'Total']].groupby(['Text', 'Section', 'Feature']).sum()
+        conn = df[['Text', 'Section', 'Feature', 'Count']].groupby(['Text', 'Section', 'Feature']).sum()
         conn.reset_index(inplace=True)
         conn_with_totals = conn.join(get_section_total_sizes().set_index(['Text', 'Section']), on=['Text', 'Section'])
-        conn_with_totals['per1000'] = conn_with_totals.Total * 1000.0 / conn_with_totals['Total Words']
+        conn_with_totals['per1000'] = conn_with_totals.Count * 1000.0 / conn_with_totals['Total Words']
     elif 'Text' in df.columns:
-        conn = df[['Text', 'Feature', 'Total']].groupby(['Text', 'Feature']).sum()
+        conn = df[['Text', 'Feature', 'Count']].groupby(['Text', 'Feature']).sum()
         conn.reset_index(inplace=True)
         conn_with_totals = conn.join(get_section_total_sizes().set_index(['Text']), on=['Text'])
     else:
-        # Assume here that df contains columns Total and 'Total Words' with whatever keys the caller wants
+        # Assume here that df contains columns Count and 'Total Words' with whatever keys the caller wants
         conn_with_totals = df
         
-    conn_with_totals['per1000'] = conn_with_totals.Total * 1000.0 / conn_with_totals['Total Words']
+    conn_with_totals['per1000'] = conn_with_totals.Count * 1000.0 / conn_with_totals['Total Words']
 
     return conn_with_totals
 
@@ -123,7 +123,7 @@ class FeatureMetrics:
     in each group would be for a given text. The plot provides mouse hover popups
     showing the current bar's values.
     """
-    def __init__(self, texts=None, connectives=None, title=None,
+    def __init__(self, texts=None, features=None, title=None,
                  x_title=None, y_title=None,
                  x_major_name=None, x_minor_name=None, x_minor_values=[]):
         """Constructor
@@ -135,7 +135,7 @@ class FeatureMetrics:
                    {'Josephus Greek': [],
                     'LXX Rahlfs Tagged': [],
                     'NA28 GNT': ['1 Acts', '2 Acts', 'Mark', 'Luke', 'Matthew'] }
-            feature: a list of the features to include in the query. The
+            features: a list of the features to include in the query. The
                      connective names are those drawn from the
                      'Text Linguistics Greek Features Data.csv' file.
             FIXME features is not general enough - should be feature
@@ -147,7 +147,7 @@ class FeatureMetrics:
             x_minor_values: A list containing the subordinate data values
         """
         self._texts = texts
-        self._connectives = connectives
+        self._features = features
         self._title = title
         self._x_title = x_title
         self._y_title = y_title
@@ -156,7 +156,7 @@ class FeatureMetrics:
         self._x_minor_values = x_minor_values
 
         # Initialize object dataframe
-        qry = create_qry(self._texts, self._connectives)
+        qry = create_qry(self._texts, self._features)
 
         # Extract data and compute hits per 1000
         data = get_connective_data().query(qry)
@@ -164,13 +164,13 @@ class FeatureMetrics:
 
         # Get hit data for each text section
         data = data.round({'per1000': 2})
-        section_data = data[['Section','Total','Total Words','per1000']]
+        section_data = data[['Section','Count','Total Words','per1000']]
         section_data.columns = ['Book','Hit Total','Total Words','Hits per 1000']
 
         # Get hit total for all sections represented for each text
         # Note that for the 'NA28 GNT' this will be a total over Luke, Acts and Matthew only.
         aggs = data.groupby(['Text']).sum()
-        aggs.per1000 = aggs.Total * 1000.0 / aggs['Total Words']
+        aggs.per1000 = aggs.Count * 1000.0 / aggs['Total Words']
         aggs.reset_index(inplace=True)
         aggs = aggs.round({ 'per1000' : 2 })
         aggs.columns = ['Book','Hit Total','Total Words','Hits per 1000']
