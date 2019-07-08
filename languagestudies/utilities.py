@@ -15,7 +15,7 @@ from pathlib import Path
 # Store the base path of this file for use in later file lookups
 base_path = Path(__file__).parent
 text_sizes_path = (base_path / "../data/Text Sizes.csv").resolve()
-connectives_path = (base_path / "../data/Text Linguistics Greek Connectives Data.csv").resolve()
+connectives_path = (base_path / "../data/Text Linguistics Greek Features Data.csv").resolve()
 
 # Utility functions for text size data
 
@@ -73,12 +73,12 @@ def compute_per1000_data(df):
     FIXME - modify to handle Text vs Text/Section automatically
     """
     if 'Section' in df.columns and 'Text' in df.columns:
-        conn = df[['Text', 'Section', 'Connective', 'Total']].groupby(['Text', 'Section', 'Connective']).sum()
+        conn = df[['Text', 'Section', 'Feature', 'Total']].groupby(['Text', 'Section', 'Feature']).sum()
         conn.reset_index(inplace=True)
         conn_with_totals = conn.join(get_section_total_sizes().set_index(['Text', 'Section']), on=['Text', 'Section'])
         conn_with_totals['per1000'] = conn_with_totals.Total * 1000.0 / conn_with_totals['Total Words']
     elif 'Text' in df.columns:
-        conn = df[['Text', 'Connective', 'Total']].groupby(['Text', 'Connective']).sum()
+        conn = df[['Text', 'Feature', 'Total']].groupby(['Text', 'Feature']).sum()
         conn.reset_index(inplace=True)
         conn_with_totals = conn.join(get_section_total_sizes().set_index(['Text']), on=['Text'])
     else:
@@ -105,10 +105,10 @@ def create_qry(texts = [], connectives = []):
         else:
             sections = [ '{}'.format(s) for s in texts[t] ]
             qry_frags.append('(Text == \'{}\' and Section in {})'.format(t, sections))
-    return 'Connective in {} and ({})'.format(connectives, ' or '.join(qry_frags))
+    return 'Feature in {} and ({})'.format(connectives, ' or '.join(qry_frags))
 
-class CorpusMetrics:
-    """A CorpusMetrics object contains metrics about features found in texts. It
+class FeatureMetrics:
+    """A FeatureMetrics object contains metrics about features found in texts. It
     contains a list of the texts in which the features are found, the features themselves,
     the total number of occurrences of the features in each text, and the number
     of occurrences per 1000 words of the features in each text.
@@ -116,7 +116,7 @@ class CorpusMetrics:
     It is intended primarily as a display object and provides a way to tabulate and
     plot the data via Bokeh.
 
-    CorpusMetrics supports a major and minor (subordinate) X axis so that one may plot
+    FeatureMetrics supports a major and minor (subordinate) X axis so that one may plot
     bar charts of features by two dimensions. For example one may plot occurrences of
     Greek connectives, by texts, using groups of adjacent ('dodged' in Bokeh terms) bars
     in bar chart. Each group of bars would be for a particular connective and the bars
@@ -135,10 +135,10 @@ class CorpusMetrics:
                    {'Josephus Greek': [],
                     'LXX Rahlfs Tagged': [],
                     'NA28 GNT': ['1 Acts', '2 Acts', 'Mark', 'Luke', 'Matthew'] }
-            connectives: a list of the connectives to include in the query. The
-                         connective names are those drawn from the
-                         'Text Linguistics Greek Connectives Data.csv' file.
-            FIXME connectives is not general enough - should be feature
+            feature: a list of the features to include in the query. The
+                     connective names are those drawn from the
+                     'Text Linguistics Greek Features Data.csv' file.
+            FIXME features is not general enough - should be feature
             title: A string for the title for the plot
             x_title: A string for the X-axis title
             y_title: A string for the Y-axis title
@@ -264,7 +264,7 @@ class CorpusMetrics:
         Arguments
             include: a list of texts/sections to include. The names are the same as
                      those in the 'Text Sizes.csv' and 
-                     'Text Linguistics Greek Connectives Data.csv' files.
+                     'Text Linguistics Greek Features Data.csv' files.
         """
         self._display_data = self._display_data.query('Book in {}'.format(include))
         self._display_data['Book'] = pd.Categorical(self._display_data['Book'], include, True)
