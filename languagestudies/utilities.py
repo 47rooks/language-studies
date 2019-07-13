@@ -17,6 +17,11 @@ base_path = Path(__file__).parent
 text_sizes_path = (base_path / "../data/Text Sizes.csv").resolve()
 connectives_path = (base_path / "../data/Text Linguistics Greek Features Data.csv").resolve()
 
+# Some module constants
+DISPLAY_DF_COLUMNS=['Group', 'Range', 'Feature', 'Count', 'Total Words', 'per1000']
+FEATURE_DF_COLUMNS=['Author','Text','Section','Feature','Count','AccWorkspace']
+TEXT_SIZE_DF_COLUMNS=['Author','Text','Section','Total Words','IncludedInTotal','AccWorkspace']
+
 # Utility functions for text size data
 
 def get_text_total_sizes():
@@ -96,7 +101,9 @@ def create_qry(texts = [], connectives = []):
     Arguments
         texts: a dict of Text names to arrays of sections. An empty section array
                results in all sections being returned,
-        connectives: an array of the connectives to search for.
+        features: a list of the features to include in the query. The
+                     connective names are those drawn from the
+                     'Text Linguistics Greek Features Data.csv' file.
     """
     qry_frags = []
     for t in texts.keys():
@@ -106,6 +113,37 @@ def create_qry(texts = [], connectives = []):
             sections = [ '{}'.format(s) for s in texts[t] ]
             qry_frags.append('(Text == \'{}\' and Section in {})'.format(t, sections))
     return 'Feature in {} and ({})'.format(connectives, ' or '.join(qry_frags))
+
+def get_feature_data(texts, features):
+    """Get the requested feature data from the specified texts and sections.
+
+    Arguments
+        texts: a dict of Text names to arrays of sections. An empty section array
+               results in all sections being returned,
+        features: a list of the features to include in the query. The
+                     connective names are those drawn from the
+                     'Text Linguistics Greek Features Data.csv' file.
+    """
+    qry = create_qry(texts, features)
+
+    # Extract data and compute hits per 1000
+    data = get_connective_data().query(qry)
+    data = compute_per1000_data(data)
+
+    # FIXME rounding should be moved
+    data = data.round({'per1000': 2})
+
+    return data
+
+def add_total_by_group(data):
+    # Get hit total for all sections represented for each text
+    aggs = data[['Text', 'Section', 'Feature','Count','Total Words']].groupby(
+                   ['Text', 'Feature']).sum()
+    aggs.reset_index(inplace=True)
+    aggs['per1000'] = aggs.Count * 1000.0 / aggs['Total Words']
+    aggs['Section'] = '__ALL__'
+    aggs = aggs.round({ 'per1000' : 2 })
+    return data.append(aggs, sort=False)
 
 class FeatureMetrics:
     """A FeatureMetrics object contains metrics about features found in texts. It
@@ -123,83 +161,64 @@ class FeatureMetrics:
     in each group would be for a given text. The plot provides mouse hover popups
     showing the current bar's values.
     """
-    def __init__(self, texts=None, features=None, title=None,
+    def __init__(self, df=None, title=None,
                  x_title=None, y_title=None,
-                 x_major_name=None, x_minor_name=None, x_minor_values=[]):
+                 x_major_name=None, x_minor_name=None,
+                 column_display_names=[]):
         """Constructor
 
         Arguments
-            texts: dict mapping text name to a list of section names to include in the query.
-                   As an example:
-
-                   {'Josephus Greek': [],
-                    'LXX Rahlfs Tagged': [],
-                    'NA28 GNT': ['1 Acts', '2 Acts', 'Mark', 'Luke', 'Matthew'] }
-            features: a list of the features to include in the query. The
-                     connective names are those drawn from the
-                     'Text Linguistics Greek Features Data.csv' file.
-            FIXME features is not general enough - should be feature
+            df: A DataFrame containing the data to be displayed. It is assumed to have
+                the following columns : Group, Range, Feature, Count, Total Words, per1000
             title: A string for the title for the plot
             x_title: A string for the X-axis title
             y_title: A string for the Y-axis title
             x_major_name: A string with the name of the major X axis
             x_minor_name: A name for subordinate data series for the X axis if required
-            x_minor_values: A list containing the subordinate data values
+            column_display_names: The names to be used in the data table display and chart,
+                                  replacing the column names in df. Must be ordered in
+                                  the same order as the columns in df.
         """
-        self._texts = texts
-        self._features = features
+        self._df = df
         self._title = title
         self._x_title = x_title
         self._y_title = y_title
         self._x_major_name = x_major_name
         self._x_minor_name = x_minor_name
-        self._x_minor_values = x_minor_values
+        self._column_display_names = column_display_names
 
-        # Initialize object dataframe
-        qry = create_qry(self._texts, self._features)
+        self._colors = viridis(len(self._df[self._x_minor_name].unique()))
+        self.sort()
 
-        # Extract data and compute hits per 1000
-        data = get_connective_data().query(qry)
-        data = compute_per1000_data(data)
-
-        # Get hit data for each text section
-        data = data.round({'per1000': 2})
-        section_data = data[['Section','Count','Total Words','per1000']]
-        section_data.columns = ['Book','Hit Total','Total Words','Hits per 1000']
-
-        # Get hit total for all sections represented for each text
-        # Note that for the 'NA28 GNT' this will be a total over Luke, Acts and Matthew only.
-        aggs = data.groupby(['Text']).sum()
-        aggs.per1000 = aggs.Count * 1000.0 / aggs['Total Words']
-        aggs.reset_index(inplace=True)
-        aggs = aggs.round({ 'per1000' : 2 })
-        aggs.columns = ['Book','Hit Total','Total Words','Hits per 1000']
-        all_data = aggs.append(section_data)
-
+    def sort(self):
         # Sort in canonical order
-        ordered_texts = ['LXX Rahlfs Tagged', 'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges',
+        ordered_groups = ['LXX Rahlfs Tagged','NA28 GNT','Josephus Greek']
+        ordered_texts = ['__ALL__', 'LXX Rahlfs Tagged', 'Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges',
                         'Ruth', '1Samuel', '2Samuel', '1Kings', '2Kings', '1Chronicles', '2Chronicles', '1Esdras', 'Ezra',
                         'Nehemiah', 'Esther', 'Judith', 'Tobit', '1Maccabees', '2Maccabees', '3Maccabees', '4Maccabees',
                         'Psalms', 'Odes', 'Proverbs', 'Ecclesiastes', 'Song', 'Job', 'Wisdom', 'Sirach', 'Solomon',
                         'Hosea', 'Amos', 'Micah', 'Joel', 'Obadiah', 'Jonah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai',
                         'Zechariah', 'Malachi', 'Isaiah', 'Jeremiah', 'Baruch', 'Lamentations', 'Letterjeremiah', 'Ezekiel',
                         'Daniel', 'Susanna', 'Bel',
-                        'Matthew', 'Mark', 'Luke', '1 Acts', '2 Acts',
-                        'Josephus Greek', 'Antiq.', 'War', 'Life', 'Apion', 'NA28 GNT']
+                        'NA28 GNT', 'Matthew', 'Mark', 'Luke', '1 Acts', '2 Acts',
+                        'Josephus Greek', 'Antiq.', 'War', 'Life', 'Apion']
 
-        # Make the Book column a category with the specified order
-        all_data['Book'] = pd.Categorical(all_data['Book'], ordered_texts, True)
-        self._all_data_sorted = all_data.sort_values(by=['Book'])
+        # Make the Group column a category with the specified order
+        self._df['Group'] = pd.Categorical(self._df['Group'], ordered_groups, True)
+        # Make the Range column a category with the specified order
+        self._df['Range'] = pd.Categorical(self._df['Range'], ordered_texts, True)
+
+        self._df = self._df.sort_values(by=['Group', 'Range'])
 
     def blank_index(self):
         """Blank out the index column so it is not seen in dataframe prints.
         """
-        blankIndex=[''] * len(self._display_data)
-        self._display_data.index=blankIndex
+        blankIndex=[''] * len(self._df)
+        self._df.index=blankIndex
 
     def _validate_columns(self, df):
         """Verify that the df has the expected columns, which are
-        'Book', 'Hit Total', 'Total Words', 'Hits per 1000'.
+        'Group', 'Range', 'Feature', 'Count', 'per1000'.
 
         Arguments
             df: the DataFrame to be validated
@@ -209,13 +228,13 @@ class FeatureMetrics:
             Raises exception otherwise
         """
         # Validate incoming df columns
-        valid_columns = pd.Index(['Book', 'Hit Total', 'Hits per 1000', 'Total Words'])
-        if df.columns.sort_values().equals(valid_columns) is False:
+        valid_columns = pd.Index(DISPLAY_DF_COLUMNS)
+        if df.columns.sort_values().equals(valid_columns.sort_values()) is False:
             raise ValueError('df has {}, rather than the required {} columns.'.format(
-                            df.columns, valid_columns))
+                             df.columns, valid_columns))
 
     def compact(self):
-        """Compact rows in df where 'Hit Total' == 0 and summarize the Book values for
+        """Compact rows in _df where 'Hit Total' == 0 and summarize the Book values for
         consecutive 0 rows by creating a new with Text = first row.Text + '-' + last row.Text,
         and totalling the 'Hit Total' and 'Total Words'. The data is assumed to be sorted
         in the desired order and is not sorted again. Thus there may be multiple groups
@@ -224,39 +243,39 @@ class FeatureMetrics:
         # self._all_data_sorted is the source dataframe and a new DataFrame is assigned to
         # self._compacted_df. self._all_data_sorted is not modified. Any columns beyond
         # those specified will be dropped from the result.
-        self._validate_columns(self._all_data_sorted)
+        self._validate_columns(self._df)
 
-        compacted_df = pd.DataFrame(columns=['Book', 'Hit Total', 'Total Words', 'Hits per 1000'])
+        compacted_df = pd.DataFrame(columns=DISPLAY_DF_COLUMNS)
         compacting = False
-        for index, row in self._all_data_sorted.iterrows():
+        for index, row in self._df.iterrows():
             if compacting is True:
-                if row['Hit Total'] == 0:
+                if row['Count'] == 0:
                     # compact with existing row compaction data
-                    c_row['Hit Total'] += row['Hit Total']
+                    c_row['Count'] += row['Count']
                     c_row['Total Words'] += row['Total Words']
                     # store for later in case this is the last row for this compaction
-                    c_end_book = row['Book']
+                    c_end_book = row['Range']
                 else:
                     # Calculate aggregates, create book entry, publish compacted row followed by
                     # new row which is not to be compacted
                     if c_start_book == c_end_book:
-                        c_row['Book'] = c_start_book
+                        c_row['Range'] = c_start_book
                     else:
-                        c_row['Book'] = c_start_book + '-' + c_end_book
-                    c_row['Hits per 1000'] = c_row['Hit Total'] * 1000.0 / c_row['Total Words']
+                        c_row['Range'] = c_start_book + '-' + c_end_book
+                    c_row['per1000'] = c_row['Count'] * 1000.0 / c_row['Total Words']
                     
                     compacted_df = compacted_df.append(c_row)
                     compacted_df = compacted_df.append(row)
                     compacting = False
             else:
-                if row['Hit Total'] != 0:
+                if row['Count'] != 0:
                     compacted_df = compacted_df.append(row)
                 else:
                     compacting = True
                     c_row = row
-                    c_start_book = c_row['Book']
-                    c_end_book = c_row['Book']   # in case there is only one 0 row
-        self._display_data = compacted_df
+                    c_start_book = c_row['Range']
+                    c_end_book = c_row['Range']   # in case there is only one 0 row
+        self._df = compacted_df
 
     def set_included_texts(self, include=None):
         """Set the texts, chapters and such to include in the result table.
@@ -266,9 +285,22 @@ class FeatureMetrics:
                      those in the 'Text Sizes.csv' and 
                      'Text Linguistics Greek Features Data.csv' files.
         """
-        self._display_data = self._display_data.query('Book in {}'.format(include))
-        self._display_data['Book'] = pd.Categorical(self._display_data['Book'], include, True)
-        self._display_data = self._display_data.sort_values(by=['Book'])
+        qry_frags = []
+        for t in include.keys():
+            if not include[t]:
+                qry_frags.append('Group == \'{}\''.format(t))
+            else:
+                ranges = [ '{}'.format(s) for s in include[t] ]
+                qry_frags.append('(Group == \'{}\' and Range in {})'.format(t, ranges))
+        qry = ' or '.join(qry_frags)
+
+        self._df = self._df.query(qry)
+
+    def move_group_to_range_ALL(self):
+        """Where range is __ALL__ replace it with the Group value. Then drop the Group
+        column from display.
+        """
+        self._df.Range = self._df.Range.where(self._df.Range != '__ALL__', self._df.Group)
 
     # def formatted_to_string(self):
     #     """Return a formatted string for printing
@@ -325,18 +357,27 @@ class FeatureMetrics:
         litems = []
         for i, s in enumerate(x_minor_values):
             offset = start + (i + 1) * pos_width
+            # bars = p.vbar(x=dodge(self._x_major_name, offset, range=p.x_range),
+            #               top=s, width=bar_width, source=source,
+            #               fill_color=colors[i])
             bars = p.vbar(x=dodge(self._x_major_name, offset, range=p.x_range),
-                          top=s, width=bar_width, source=source,
+                          top=self._x_minor_name, width=bar_width, source=source,
                           fill_color=colors[i])
             # Add legend item for this series
             litems.append(LegendItem(label=s, renderers=[bars]))
             # Add hover tool
             # Note that toggleable is false because each HoverTool gets an icon in the toolbar if it can be toggled
             #  on and off. With large numbers of sections the toolbar is a real mess. For now just turn them off.
+            # p.add_tools(HoverTool(tooltips=[(self._x_major_name, '@' + self._x_major_name),
+            #                                 (self._x_minor_name, '{}'.format(s)),
+            #                                 ("Total Hits", "@{t" + s + "}"),
+            #                                 ("Hits/1000", "@{" + s + "}")],
+            #                       renderers=[bars], toggleable=False,
+            #                       point_policy='follow_mouse'))
             p.add_tools(HoverTool(tooltips=[(self._x_major_name, '@' + self._x_major_name),
                                             (self._x_minor_name, '{}'.format(s)),
-                                            ("Total Hits", "@{t" + s + "}"),
-                                            ("Hits/1000", "@{" + s + "}")],
+                                            ("Total Hits", "@{t" + self._x_minor_name + "}"),
+                                            ("Hits/1000", "@{" + self._x_minor_name + "}")],
                                   renderers=[bars], toggleable=False,
                                   point_policy='follow_mouse'))
 
@@ -357,24 +398,42 @@ class FeatureMetrics:
         """
         # Create Bokeh datatable from self._display_data df
         # bokeh columns
-        Columns = [TableColumn(field=Ci, title=Ci) for Ci in self._display_data.columns]
+        Columns = [TableColumn(field=f, title=t) for f, t in zip(self._df.columns,
+                                                                 self._column_display_names)
+                                                            if t is not None]
         data_table = DataTable(columns=Columns,
-                               source=ColumnDataSource(self._display_data),
-                               height_policy='max', index_position=None) # bokeh table
+                               source=ColumnDataSource(self._df),
+                               height_policy='max',
+                               index_position=None) # bokeh table
 
         # Create and display bar chart
+        # s_data=dict()
+        # s_data = pd.DataFrame({self._x_major_name: self._display_data.Book,
+        #                        self._x_minor_values[0]: self._display_data['Hits per 1000'],
+        #                        't' + self._x_minor_values[0]: self._display_data['Hit Total']
+        #                       })
+        # Create and display bar chart
         s_data=dict()
-        s_data = pd.DataFrame({self._x_major_name: self._display_data.Book,
-                               self._x_minor_values[0]: self._display_data['Hits per 1000'],
-                               't' + self._x_minor_values[0]: self._display_data['Hit Total']
+        s_data = pd.DataFrame({self._x_major_name: self._df[self._x_major_name],
+                               self._x_minor_name: self._df['per1000'],
+                               't' + self._x_minor_name: self._df['Count']
                               })
-
-        fig = self._create_plot(x_range=list(self._display_data.Book),
-                               s_data=s_data,
-                               x_minor_values=self._x_minor_values,
-                               colors=viridis(1),
-                               chart_title=self._title,
-                               x_title=self._x_title,
-                               y_title=self._y_title
-                              )
+        # fig = self._create_plot(x_range=list(self._display_data.Book),
+        #                        s_data=s_data,
+        #                        x_minor_values=self._x_minor_values,
+        #                        colors=viridis(1),
+        #                        chart_title=self._title,
+        #                        x_title=self._x_title,
+        #                        y_title=self._y_title
+        #                       )
+        # return row(data_table, fig)
+        fig = self._create_plot(x_range=list(self._df.Range),
+                                s_data=s_data,
+                                x_minor_values=self._df[self._x_minor_name].unique(),
+                                colors=self._colors,
+                                chart_title=self._title,
+                                x_title=self._x_title,
+                                y_title=self._y_title
+                               )
         return row(data_table, fig)
+        # return row(data_table)
