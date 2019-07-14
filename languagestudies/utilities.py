@@ -3,7 +3,7 @@ import math
 import pandas as pd
 
 from bokeh.layouts import row
-from bokeh.models import ColumnDataSource, FactorRange, Legend, LegendItem
+from bokeh.models import ColumnDataSource, Legend, LegendItem
 from bokeh.models.widgets import DataTable, DateFormatter, TableColumn
 from bokeh.models.tools import HoverTool
 from bokeh.palettes import viridis
@@ -203,12 +203,28 @@ class FeatureMetrics:
                         'NA28 GNT', 'Matthew', 'Mark', 'Luke', '1 Acts', '2 Acts',
                         'Josephus Greek', 'Antiq.', 'War', 'Life', 'Apion']
 
-        # Make the Group column a category with the specified order
-        self._df['Group'] = pd.Categorical(self._df['Group'], ordered_groups, True)
-        # Make the Range column a category with the specified order
-        self._df['Range'] = pd.Categorical(self._df['Range'], ordered_texts, True)
+        # Suppress Pandas SettingWithCopyWarning as there are false positive cases which
+        # the following code can hit with multi-valued Feature data
+        pd.options.mode.chained_assignment = None
 
+        # Make the Group column a category with the specified order
+        group_cat = pd.Categorical(self._df['Group'].unique(), ordered_groups, True)
+        self._df.loc[:, 'Group'] = self._df['Group'].astype(group_cat)
+
+        # Make the Range column a category with the specified order
+        range_cat = pd.Categorical(self._df['Range'].unique(), ordered_texts, True)
+        self._df.loc[:, 'Range'] = self._df['Range'].astype(range_cat)
+
+        # Sort the rows according to the canonical orders
         self._df = self._df.sort_values(by=['Group', 'Range'])
+
+        # Convert the Categorical columns back now that the sort is done. This just
+        # avoids other difficulties with Categoricals.
+        self._df.Group = self._df.Group.astype(str)
+        self._df.Range = self._df.Range.astype(str)
+
+        # Renable Pandas SettingWithCopyWarning
+        pd.options.mode.chained_assignment = 'warn'
 
     def blank_index(self):
         """Blank out the index column so it is not seen in dataframe prints.
@@ -337,9 +353,6 @@ class FeatureMetrics:
         # Tool palette
         TOOLS = "crosshair,pan,wheel_zoom,box_zoom,reset,save"
 
-        # Create ColumnDataSource for plotting
-        source = ColumnDataSource(data=s_data)
-
         # Create basic figure
         p = figure(x_range=x_range, plot_width=900,
                    title=chart_title,
@@ -356,28 +369,22 @@ class FeatureMetrics:
         start = -(positions / 2) * pos_width + (pos_width / 2)
         litems = []
         for i, s in enumerate(x_minor_values):
+            # # Create ColumnDataSource for plotting
+            source = ColumnDataSource(data=s_data.query('{} == \'{}\''.format(self._x_minor_name, s)))
             offset = start + (i + 1) * pos_width
-            # bars = p.vbar(x=dodge(self._x_major_name, offset, range=p.x_range),
-            #               top=s, width=bar_width, source=source,
-            #               fill_color=colors[i])
             bars = p.vbar(x=dodge(self._x_major_name, offset, range=p.x_range),
-                          top=self._x_minor_name, width=bar_width, source=source,
+                          top='y',
+                          width=bar_width, source=source,
                           fill_color=colors[i])
             # Add legend item for this series
             litems.append(LegendItem(label=s, renderers=[bars]))
             # Add hover tool
             # Note that toggleable is false because each HoverTool gets an icon in the toolbar if it can be toggled
             #  on and off. With large numbers of sections the toolbar is a real mess. For now just turn them off.
-            # p.add_tools(HoverTool(tooltips=[(self._x_major_name, '@' + self._x_major_name),
-            #                                 (self._x_minor_name, '{}'.format(s)),
-            #                                 ("Total Hits", "@{t" + s + "}"),
-            #                                 ("Hits/1000", "@{" + s + "}")],
-            #                       renderers=[bars], toggleable=False,
-            #                       point_policy='follow_mouse'))
             p.add_tools(HoverTool(tooltips=[(self._x_major_name, '@' + self._x_major_name),
                                             (self._x_minor_name, '{}'.format(s)),
-                                            ("Total Hits", "@{t" + self._x_minor_name + "}"),
-                                            ("Hits/1000", "@{" + self._x_minor_name + "}")],
+                                            ("Total Hits", "@{ty}"),
+                                            ("Hits/1000", "@{y}")],
                                   renderers=[bars], toggleable=False,
                                   point_policy='follow_mouse'))
 
@@ -407,27 +414,13 @@ class FeatureMetrics:
                                index_position=None) # bokeh table
 
         # Create and display bar chart
-        # s_data=dict()
-        # s_data = pd.DataFrame({self._x_major_name: self._display_data.Book,
-        #                        self._x_minor_values[0]: self._display_data['Hits per 1000'],
-        #                        't' + self._x_minor_values[0]: self._display_data['Hit Total']
-        #                       })
-        # Create and display bar chart
         s_data=dict()
         s_data = pd.DataFrame({self._x_major_name: self._df[self._x_major_name],
-                               self._x_minor_name: self._df['per1000'],
-                               't' + self._x_minor_name: self._df['Count']
+                               self._x_minor_name: self._df[self._x_minor_name],
+                               'y': self._df['per1000'],
+                               'ty': self._df['Count']
                               })
-        # fig = self._create_plot(x_range=list(self._display_data.Book),
-        #                        s_data=s_data,
-        #                        x_minor_values=self._x_minor_values,
-        #                        colors=viridis(1),
-        #                        chart_title=self._title,
-        #                        x_title=self._x_title,
-        #                        y_title=self._y_title
-        #                       )
-        # return row(data_table, fig)
-        fig = self._create_plot(x_range=list(self._df.Range),
+        fig = self._create_plot(x_range=list(self._df[self._x_major_name].unique()),
                                 s_data=s_data,
                                 x_minor_values=self._df[self._x_minor_name].unique(),
                                 colors=self._colors,
@@ -436,4 +429,3 @@ class FeatureMetrics:
                                 y_title=self._y_title
                                )
         return row(data_table, fig)
-        # return row(data_table)
