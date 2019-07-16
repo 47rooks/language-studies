@@ -354,7 +354,7 @@ class FeatureMetrics:
         Return - the figure
         """
         # Tool palette
-        TOOLS = "crosshair,pan,wheel_zoom,box_zoom,reset,save"
+        TOOLS = "crosshair,pan,wheel_zoom,box_zoom,reset,save,tap,box_select"
 
         # Create basic figure
         p = figure(x_range=x_range, plot_width=900,
@@ -421,7 +421,8 @@ class FeatureMetrics:
         data_table = DataTable(columns=Columns,
                                source=source,
                                min_height=500, height_policy='auto',
-                               index_position=None) # bokeh table
+                               index_position=None,
+                               scroll_to_selection=True) # bokeh table
 
         # Create and display bar chart
         fig = self._create_plot(x_range=list(self._df[self._x_major_name].unique()),
