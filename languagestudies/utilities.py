@@ -2,9 +2,12 @@ import functools as ft
 import math
 import pandas as pd
 
-from bokeh.layouts import row
-from bokeh.models import ColumnDataSource, Legend, LegendItem
+from bokeh.layouts import gridplot, layout, row
+from bokeh.models import ColumnDataSource, CDSView, Legend, LegendItem
+from bokeh.models.annotations import Label
+from bokeh.models.filters import GroupFilter
 from bokeh.models.widgets import DataTable, DateFormatter, TableColumn
+from bokeh.models.widgets.markups import Div
 from bokeh.models.tools import HoverTool
 from bokeh.palettes import viridis
 from bokeh.plotting import figure
@@ -369,26 +372,32 @@ class FeatureMetrics:
         start = -(positions / 2) * pos_width + (pos_width / 2)
         litems = []
         for i, s in enumerate(x_minor_values):
-            # # Create ColumnDataSource for plotting
-            source = ColumnDataSource(data=s_data.query('{} == \'{}\''.format(self._x_minor_name, s)))
+            # Create CDSView for plotting and syncing to the Datatable.
+            cds_view=CDSView(source=s_data, filters=[GroupFilter(self._x_minor_name, s)])
             offset = start + (i + 1) * pos_width
             bars = p.vbar(x=dodge(self._x_major_name, offset, range=p.x_range),
-                          top='y',
-                          width=bar_width, source=source,
+                          top='per1000',
+                          width=bar_width, source=s_data, view=cds_view,
                           fill_color=colors[i])
             # Add legend item for this series
             litems.append(LegendItem(label=s, renderers=[bars]))
             # Add hover tool
             # Note that toggleable is false because each HoverTool gets an icon in the toolbar if it can be toggled
             #  on and off. With large numbers of sections the toolbar is a real mess. For now just turn them off.
+            # p.add_tools(HoverTool(tooltips=[(self._x_major_name, '@' + self._x_major_name),
+            #                                 (self._x_minor_name, '{}'.format(s)),
+            #                                 ("Total Hits", "@{ty}"),
+            #                                 ("Hits/1000", "@{y}")],
+            #                       renderers=[bars], toggleable=False,
+            #                       point_policy='follow_mouse'))
             p.add_tools(HoverTool(tooltips=[(self._x_major_name, '@' + self._x_major_name),
                                             (self._x_minor_name, '{}'.format(s)),
-                                            ("Total Hits", "@{ty}"),
-                                            ("Hits/1000", "@{y}")],
+                                            ("Total Hits", "@{Count}"),
+                                            ("Hits/1000", "@{per1000}")],
                                   renderers=[bars], toggleable=False,
                                   point_policy='follow_mouse'))
 
-        legend = Legend(items = litems, location=(0, 0))
+        legend = Legend(items = litems, location=('center'))
         p.add_layout(legend, 'right')
         
         # Set axis titles
@@ -405,27 +414,26 @@ class FeatureMetrics:
         """
         # Create Bokeh datatable from self._display_data df
         # bokeh columns
+        source=ColumnDataSource(self._df)
         Columns = [TableColumn(field=f, title=t) for f, t in zip(self._df.columns,
                                                                  self._column_display_names)
                                                             if t is not None]
         data_table = DataTable(columns=Columns,
-                               source=ColumnDataSource(self._df),
-                               height_policy='max',
+                               source=source,
+                               min_height=500, height_policy='auto',
                                index_position=None) # bokeh table
 
         # Create and display bar chart
-        s_data=dict()
-        s_data = pd.DataFrame({self._x_major_name: self._df[self._x_major_name],
-                               self._x_minor_name: self._df[self._x_minor_name],
-                               'y': self._df['per1000'],
-                               'ty': self._df['Count']
-                              })
         fig = self._create_plot(x_range=list(self._df[self._x_major_name].unique()),
-                                s_data=s_data,
+                                s_data=source,
                                 x_minor_values=self._df[self._x_minor_name].unique(),
                                 colors=self._colors,
-                                chart_title=self._title,
+                                chart_title=None,
                                 x_title=self._x_title,
                                 y_title=self._y_title
                                )
-        return row(data_table, fig)
+        fig.min_border_left = 60
+        msg = Div(text='<h4>{}</h4>'.format(self._title))
+        r = layout([[msg], [data_table, fig]], sizing_mode='stretch_both')
+        
+        return r
